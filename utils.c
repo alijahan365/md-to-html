@@ -17,6 +17,7 @@ ASTNode* create_node(NodeType type, int line_number) {
     node->child_count = 0;
     node->child_capacity = 0;
     node->line_number = line_number;
+    node->column_number = 1;
     return node;
 }
 

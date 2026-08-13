@@ -1,7 +1,5 @@
-/* ==========================================================================
-   MD2HTML COMPILER ENGINE (Client-Side JS Core)
-   Architecture: Lexer -> Recursive Descent Parser -> Symbol Table & Semantic -> CodeGen
-   ========================================================================== */
+// Markdown compiler engine (Lexer, Parser, Symbol Table, CodeGen)
+
 
 // 1. TOKEN DEFINITIONS
 const TOKEN_TYPES = {

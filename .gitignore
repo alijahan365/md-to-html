@@ -1,3 +1,18 @@
+# Build Executables & Objects
 *.o
 *.exe
+*.out
+
+# Flex & Bison Generated Files
+lex.yy.c
+parser.tab.c
+parser.tab.h
+
+# Temporary Output Files
+output.html
+output_sem_err.html
+output_syn_err.html
+
+# IDE & Cache
 .cache/
+.vscode/

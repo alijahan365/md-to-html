@@ -25,6 +25,7 @@ typedef struct ASTNode {
     int child_count;
     int child_capacity;
     int line_number;    // For semantic errors
+    int column_number;  // For precise source mapping
 } ASTNode;
 
 ASTNode* create_node(NodeType type, int line_number);
