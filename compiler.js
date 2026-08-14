@@ -644,6 +644,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Intercept clicks in Live Preview pane so links ALWAYS open in a new tab without reloading main page
+    htmlPreviewBody.addEventListener('click', (e) => {
+        const link = e.target.closest('a');
+        if (link) {
+            e.preventDefault();
+            let href = link.getAttribute('href');
+            if (!href || href === '#' || href === 'javascript:void(0)') {
+                const match = link.textContent.match(/https?:\/\/[^\s\)\>]+/);
+                if (match) href = match[0];
+            }
+            if (href && href !== '#') {
+                window.open(href, '_blank', 'noopener,noreferrer');
+            }
+        }
+    });
+
     // Load initial preset
     markdownInput.value = PRESETS.valid;
     updateEditor();
