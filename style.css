@@ -46,15 +46,15 @@ body {
     background-color: var(--bg-dark);
     color: var(--text-main);
     min-height: 100vh;
-    height: 100vh;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     line-height: 1.5;
 }
 
 .app-shell {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
     padding: 12px;
     gap: 10px;
 }
@@ -270,7 +270,6 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 0;
-    overflow: hidden;
     position: relative;
 }
 
@@ -279,11 +278,18 @@ body {
     flex: 1;
     flex-direction: column;
     min-height: 0;
-    overflow-y: auto;
+    padding-bottom: 24px;
 }
 
 .view-pane.active {
     display: flex;
+}
+
+#view-studio.active {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 130px);
+    min-height: 550px;
 }
 
 /* ==========================================================================

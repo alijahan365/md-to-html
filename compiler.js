@@ -600,6 +600,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 pane.classList.remove('active');
             }
         });
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     document.querySelectorAll('.nav-link').forEach(btn => {
