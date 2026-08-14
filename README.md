@@ -94,7 +94,7 @@ This project implements a formal **Markdown-to-HTML Compiler and Translator** ad
 
 ---
 
-## 🎯 CEP 7-Point Requirement Alignment
+## 🎯 CEP 5-Point Requirement Alignment
 
 | CEP Requirement | Technical Defense & Implementation |
 | :--- | :--- |
@@ -103,8 +103,6 @@ This project implements a formal **Markdown-to-HTML Compiler and Translator** ad
 | **3. Depth of Analysis** | Evaluates Markdown grammar ambiguities (inline formatting vs block list items) and provides precise source position diagnostics. |
 | **4. Multiple Components** | Integrates 5 connected compiler modules: Lexer, Parser, Symbol Table, Semantic Analyzer, and Target HTML Code Generator. |
 | **5. Unfamiliar Issues** | Handles edge cases: unclosed Markdown delimiters, missing link target URLs, empty headers, and duplicate anchor collisions. |
-| **6. Interdependence** | Ensures output of Lexer feeds Parser AST, Parser AST feeds Symbol Table & Semantics, and validated AST feeds Code Generator. |
-| **7. Testing and Evaluation** | Tested across valid Markdown input, syntax error cases, semantic warning cases, and complex formatting documents. |
 
 ---
 
