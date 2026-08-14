@@ -524,7 +524,6 @@ Here is a paragraph with **Bold** text and *Italic* text.
 Check out this [Google](https://google.com) link.
 
 Normal paragraph ends here.`,
-    StartLine:510,TargetContent:
 
     syntax_err: `# Syntax Error Demonstration
 
