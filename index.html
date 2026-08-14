@@ -7,7 +7,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
@@ -383,21 +383,40 @@
                     </div>
                 </div>
 
-                <!-- Architecture Flowchart Card -->
+                <!-- Vector Graphical Pipeline Diagram Card -->
                 <div class="arch-flow-card">
-                    <h3><i class="fa-solid fa-network-wired"></i> Compiler Dataflow Pipeline Diagram</h3>
-                    <div class="ascii-diagram-viewport">
-  ┌───────────────────┐        ┌───────────────────┐        ┌───────────────────┐
-  │    sample.md      │ ─────► │  Phase 1: Lexer   │ ─────► │  Phase 2: Parser  │
-  │  (Markdown Text)  │        │ (Tokens + L#:C#)  │        │(Recursive Descent │
-  └───────────────────┘        └───────────────────┘        │   or Bison AST)   │
-                                                            └───────────────────┘
-                                                                      │
-                                                                      ▼
-  ┌───────────────────┐        ┌───────────────────┐        ┌───────────────────┐
-  │    output.html    │ ◄───── │  Phase 4: CodeGen │ ◄───── │ Phase 3: Semantics│
-  │  (HTML5 Document) │        │(HTML5 Generation) │        │  & Symbol Table   │
-  └───────────────────┘        └───────────────────┘        └───────────────────┘
+                    <h3><i class="fa-solid fa-network-wired"></i> Compiler Dataflow Pipeline Architecture</h3>
+                    <div class="pipeline-diagram-grid">
+                        <div class="pipeline-step-card">
+                            <span class="step-tag">Input Phase</span>
+                            <h4>Markdown Source</h4>
+                            <p>Raw text input document containing structural Markdown headers, lists, links, and inline text formatting.</p>
+                            <span class="step-file-tag">sample.md</span>
+                        </div>
+                        <div class="pipeline-step-card">
+                            <span class="step-tag">Phase 1</span>
+                            <h4>Lexical Scanner</h4>
+                            <p>Scans character stream and emits 14 token types with precise line (`L`) and column (`C`) positions.</p>
+                            <span class="step-file-tag">lexer.c / lexer.l</span>
+                        </div>
+                        <div class="pipeline-step-card">
+                            <span class="step-tag">Phase 2</span>
+                            <h4>Syntax Parser</h4>
+                            <p>Top-Down Recursive Descent / Bison LALR parser constructs Abstract Syntax Tree (AST).</p>
+                            <span class="step-file-tag">parser.c / parser.y</span>
+                        </div>
+                        <div class="pipeline-step-card">
+                            <span class="step-tag">Phase 3</span>
+                            <h4>Symbol & Semantics</h4>
+                            <p>Populates Headings & Links in Symbol Table, checks empty headers, missing URLs, and duplicate slug IDs.</p>
+                            <span class="step-file-tag">symbol_table.c / semantic.c</span>
+                        </div>
+                        <div class="pipeline-step-card">
+                            <span class="step-tag">Phase 4</span>
+                            <h4>HTML Code Generator</h4>
+                            <p>Performs post-order AST traversal generating semantic HTML5 markup and live preview rendering.</p>
+                            <span class="step-file-tag">html_generator.c</span>
+                        </div>
                     </div>
                 </div>
             </section>
