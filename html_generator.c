@@ -73,7 +73,7 @@ static void generate_node(ASTNode *node, FILE *out) {
             fprintf(out, "</li>\n");
             break;
         case NODE_LINK:
-            fprintf(out, "<a href=\"%s\">", node->url ? node->url : "");
+            fprintf(out, "<a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">", node->url ? node->url : "");
             for (int i = 0; i < node->child_count; i++) generate_node(node->children[i], out);
             fprintf(out, "</a>");
             break;
