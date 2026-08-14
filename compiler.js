@@ -563,10 +563,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnClear = document.getElementById('btn-clear');
     const btnCopyHTML = document.getElementById('btn-copy-html');
     const btnDownloadHTML = document.getElementById('btn-download-html');
+    const btnExportASTJson = document.getElementById('btn-export-ast-json');
+    const btnExportSymbolsCSV = document.getElementById('btn-export-symbols-csv');
     const btnToggleTheme = document.getElementById('btn-toggle-theme');
 
     const statLines = document.getElementById('stat-lines');
     const statChars = document.getElementById('stat-chars');
+    const statCompileTime = document.getElementById('stat-compile-time');
     const statusBadge = document.getElementById('status-badge');
     const statusText = document.getElementById('status-text');
 
@@ -582,6 +585,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const errorsContainer = document.getElementById('errors-container');
     const browserMockup = document.querySelector('.browser-mockup');
     const toastContainer = document.getElementById('toast-container');
+
+    let currentAST = null;
+    let currentSymbols = [];
 
     // SPA Router View Switcher
     function switchView(viewId) {
@@ -737,15 +743,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
     btnDownloadHTML.addEventListener('click', () => {
         const code = htmlCodeOutput.textContent;
-        const blob = new Blob([code], { type: 'text/html' });
+        downloadBlob(code, 'compiled_output.html', 'text/html');
+        showToast('Downloaded compiled_output.html', 'info');
+    });
+
+    if (btnExportASTJson) {
+        btnExportASTJson.addEventListener('click', () => {
+            if (!currentAST) return;
+            const jsonStr = JSON.stringify(currentAST, null, 2);
+            downloadBlob(jsonStr, 'ast_tree.json', 'application/json');
+            showToast('Exported AST Tree as ast_tree.json', 'info');
+        });
+    }
+
+    if (btnExportSymbolsCSV) {
+        btnExportSymbolsCSV.addEventListener('click', () => {
+            if (!currentSymbols || currentSymbols.length === 0) {
+                showToast('Symbol Table is empty.', 'warning');
+                return;
+            }
+            let csv = 'Index,Category,Identifier,Target,Line,Column\n';
+            currentSymbols.forEach((s, idx) => {
+                csv += `"${idx + 1}","${s.category}","${s.identifier.replace(/"/g, '""')}","${s.target}","${s.line}","${s.col}"\n`;
+            });
+            downloadBlob(csv, 'symbol_table.csv', 'text/csv');
+            showToast('Exported Symbol Table as symbol_table.csv', 'info');
+        });
+    }
+
+    function downloadBlob(content, filename, contentType) {
+        const blob = new Blob([content], { type: contentType });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'compiled_output.html';
+        a.download = filename;
         a.click();
         URL.revokeObjectURL(url);
-        showToast('Downloaded compiled_output.html', 'info');
-    });
+    }
 
     // Tab Navigation inside Visualizer Panel
     document.querySelectorAll('.nav-tab').forEach(btn => {
@@ -775,6 +809,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function compileSource() {
+        const startTime = performance.now();
         const source = markdownInput.value;
 
         // 1. Lexical Scanner
@@ -784,14 +819,21 @@ document.addEventListener('DOMContentLoaded', () => {
         // 2. Recursive Descent Parser
         const parser = new Parser(tokens);
         const ast = parser.parse();
+        currentAST = ast;
 
         // 3. Symbol Table & Semantic Analysis
         const symAnalyzer = new SymbolTableAnalyzer();
         symAnalyzer.populateAndAnalyze(ast);
+        currentSymbols = symAnalyzer.symbols;
 
         // 4. Target Code Generator
         const codeGen = new CodeGenerator();
         const generatedBody = codeGen.generate(ast);
+
+        const endTime = performance.now();
+        const duration = (endTime - startTime).toFixed(2);
+
+        if (statCompileTime) statCompileTime.textContent = `⚡ ${duration} ms`;
 
         const fullHTMLDoc = `<!DOCTYPE html>
 <html>
