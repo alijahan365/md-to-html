@@ -612,17 +612,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.querySelectorAll('.nav-link').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const targetView = btn.getAttribute('data-view');
-            switchView(targetView);
+        btn.addEventListener('click', (e) => {
+            const navBtn = e.target.closest('.nav-link');
+            if (navBtn) {
+                const targetView = navBtn.getAttribute('data-view');
+                if (targetView) switchView(targetView);
+            }
         });
     });
 
     // Launch buttons & logo routing
-    document.getElementById('nav-logo').addEventListener('click', () => switchView('view-home'));
-    document.getElementById('nav-btn-launch').addEventListener('click', () => switchView('view-studio'));
-    document.getElementById('btn-hero-launch').addEventListener('click', () => switchView('view-studio'));
-    document.getElementById('btn-hero-cep').addEventListener('click', () => switchView('view-architecture'));
+    const navLogo = document.getElementById('nav-logo');
+    const navBtnLaunch = document.getElementById('nav-btn-launch');
+    const btnHeroLaunch = document.getElementById('btn-hero-launch');
+    const btnHeroCep = document.getElementById('btn-hero-cep');
+
+    if (navLogo) navLogo.addEventListener('click', () => switchView('view-home'));
+    if (navBtnLaunch) navBtnLaunch.addEventListener('click', () => switchView('view-studio'));
+    if (btnHeroLaunch) btnHeroLaunch.addEventListener('click', () => switchView('view-studio'));
+    if (btnHeroCep) btnHeroCep.addEventListener('click', () => switchView('view-architecture'));
 
     document.querySelectorAll('.btn-back-home').forEach(btn => {
         btn.addEventListener('click', () => switchView('view-home'));
@@ -633,9 +641,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.querySelectorAll('.feature-card').forEach(card => {
-        card.addEventListener('click', () => {
-            const target = card.getAttribute('data-view-target');
-            if (target) switchView(target);
+        card.addEventListener('click', (e) => {
+            const cardEl = e.target.closest('.feature-card');
+            if (cardEl) {
+                const target = cardEl.getAttribute('data-view-target');
+                if (target) switchView(target);
+            }
         });
     });
 
