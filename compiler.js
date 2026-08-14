@@ -602,6 +602,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const astContainer = document.getElementById('ast-container');
     const errorsContainer = document.getElementById('errors-container');
 
+    // Mobile Pane Switcher
+    const btnShowEditor = document.getElementById('btn-show-editor');
+    const btnShowVisualizer = document.getElementById('btn-show-visualizer');
+    const panelEditor = document.getElementById('panel-editor');
+    const panelVisualizer = document.getElementById('panel-visualizer');
+
+    if (btnShowEditor && btnShowVisualizer && panelEditor && panelVisualizer) {
+        btnShowEditor.addEventListener('click', () => {
+            btnShowEditor.classList.add('active');
+            btnShowVisualizer.classList.remove('active');
+            panelEditor.classList.add('active-mobile');
+            panelVisualizer.classList.remove('active-mobile');
+        });
+
+        btnShowVisualizer.addEventListener('click', () => {
+            btnShowVisualizer.classList.add('active');
+            btnShowEditor.classList.remove('active');
+            panelVisualizer.classList.add('active-mobile');
+            panelEditor.classList.remove('active-mobile');
+        });
+    }
+
     // Theme toggle
     let isDarkTheme = false;
     btnToggleTheme.addEventListener('click', () => {
