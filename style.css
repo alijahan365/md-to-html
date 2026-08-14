@@ -240,9 +240,9 @@ body {
     background: rgba(251, 113, 133, 0.1);
 }
 
-/* Mobile Pane Switcher (Hidden on desktop) */
+/* Mobile Pane Switcher (Hidden on desktop > 992px) */
 .mobile-pane-switcher {
-    display: none;
+    display: none !important;
     gap: 8px;
     background: var(--bg-panel);
     padding: 6px;
@@ -779,7 +779,7 @@ body {
     }
 
     .mobile-pane-switcher {
-        display: flex;
+        display: flex !important;
     }
 
     .ide-workspace {

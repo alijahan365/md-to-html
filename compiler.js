@@ -503,7 +503,13 @@ class CodeGenerator {
             case NODE_TYPES.LIST_ITEM:
                 return `  <li>${this.generateChildren(node)}</li>\n`;
             case NODE_TYPES.LINK:
-                const href = node.url ? this.escapeHTML(node.url) : '#';
+                let url = node.url;
+                if (!url) {
+                    const rawText = this.generateChildren(node);
+                    const match = rawText.match(/https?:\/\/[^\s\)\>]+/);
+                    if (match) url = match[0];
+                }
+                const href = url ? this.escapeHTML(url) : '#';
                 return `<a href="${href}" target="_blank" rel="noopener noreferrer">${this.generateChildren(node)}</a>`;
             default:
                 return this.generateChildren(node);
@@ -521,6 +527,7 @@ class CodeGenerator {
     }
 
     escapeHTML(str) {
+        if (!str) return '';
         return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 }
@@ -541,13 +548,13 @@ This compiler parses **Markdown syntax** into clean HTML.
 2. AST Construction
 3. Semantic Validation
 
-For project details, visit [Compiler Repo](https://github.com).`,
+For project details, visit [Google Search](https://google.com).`,
 
     syntax_err: `# Syntax Error Demonstration
 
 This paragraph has **unclosed bold text delimiter.
 
-Here is an unclosed link: [Google Search(https://google.com)`,
+Here is an unclosed link: [Google Search](https://google.com)`,
 
     semantic_err: `# 
 
@@ -571,7 +578,7 @@ This document demonstrates **bold**, *italic*, and **nested *bold-italic*** form
 2. Accurate Error Locations (Line & Column)
 3. Zero External Dependencies
 
-Learn more at [Project Home](https://github.com).`
+Learn more at [Google Search](https://google.com).`
 };
 
 document.addEventListener('DOMContentLoaded', () => {
