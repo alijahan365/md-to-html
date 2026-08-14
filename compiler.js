@@ -623,6 +623,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-hero-launch').addEventListener('click', () => switchView('view-studio'));
     document.getElementById('btn-hero-cep').addEventListener('click', () => switchView('view-architecture'));
 
+    document.querySelectorAll('.btn-back-home').forEach(btn => {
+        btn.addEventListener('click', () => switchView('view-home'));
+    });
+
+    document.querySelectorAll('.btn-launch-studio').forEach(btn => {
+        btn.addEventListener('click', () => switchView('view-studio'));
+    });
+
     document.querySelectorAll('.feature-card').forEach(card => {
         card.addEventListener('click', () => {
             const target = card.getAttribute('data-view-target');

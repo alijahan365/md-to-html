@@ -286,6 +286,14 @@ a, a:hover, a:visited, a:active {
     margin-right: 8px;
 }
 
+/* Back Navigation Action Bar */
+.view-back-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
 /* ==========================================================================
    VIEW CONTAINER & PANES
    ========================================================================== */
