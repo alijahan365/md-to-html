@@ -1,0 +1,30 @@
+name: Build & Test CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install Compiler Build Tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gcc flex bison make
+
+    - name: Build Compiler Executable
+      run: |
+        make clean || true
+        gcc -Wall -Wextra -std=c99 -o md2html utils.c lexer.c parser.c symbol_table.c semantic.c html_generator.c main.c
+
+    - name: Run Test Cases
+      run: |
+        ./md2html sample.md output.html
+        test -s output.html
+        echo "Compilation Test Passed Successfully!"
