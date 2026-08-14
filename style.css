@@ -802,6 +802,30 @@ a, a:hover, a:visited, a:active {
 
 .pane-action-bar { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
 
+.html-split-container {
+    display: flex;
+    gap: 12px;
+    flex: 1;
+    min-height: 0;
+}
+
+.split-code-box, .split-webpage-box {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.box-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-heading);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
 .code-viewport {
     flex: 1;
     background: var(--bg-input);
@@ -814,6 +838,25 @@ a, a:hover, a:visited, a:active {
     color: #38bdf8;
     white-space: pre-wrap;
 }
+
+.mini-webpage-viewport {
+    flex: 1;
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    overflow-y: auto;
+    color: #1e293b;
+}
+
+.mini-webpage-viewport h1, .mini-webpage-viewport h2, .mini-webpage-viewport h3 { margin-top: 0.8em; margin-bottom: 0.4em; font-weight: 700; }
+.mini-webpage-viewport h1 { font-size: 1.6em; color: #0284c7; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.2em; }
+.mini-webpage-viewport h2 { font-size: 1.3em; color: #334155; }
+.mini-webpage-viewport h3 { font-size: 1.1em; color: #475569; }
+.mini-webpage-viewport p { margin-bottom: 0.8em; line-height: 1.6; }
+.mini-webpage-viewport ul, .mini-webpage-viewport ol { margin-bottom: 0.8em; padding-left: 20px; }
+.mini-webpage-viewport li { margin-bottom: 4px; }
+.mini-webpage-viewport a { color: #0284c7; font-weight: 500; }
 
 .data-table-wrapper {
     flex: 1;

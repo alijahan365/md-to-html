@@ -980,12 +980,13 @@ ${generatedBody}</body>
     }
 
     function renderPreview(htmlBody) {
-        if (!htmlPreviewBody) return;
-        if (!htmlBody || htmlBody.trim() === '') {
-            htmlPreviewBody.innerHTML = '<p class="empty-state-text">No output generated.</p>';
-            return;
-        }
-        htmlPreviewBody.innerHTML = htmlBody;
+        const miniHtmlPreview = document.getElementById('mini-html-preview');
+        const content = (!htmlBody || htmlBody.trim() === '') 
+            ? '<p class="empty-state-text">No output generated.</p>' 
+            : htmlBody;
+
+        if (htmlPreviewBody) htmlPreviewBody.innerHTML = content;
+        if (miniHtmlPreview) miniHtmlPreview.innerHTML = content;
     }
 
     function escapeHTML(str) {

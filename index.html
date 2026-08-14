@@ -186,7 +186,7 @@
                                 <i class="fa-solid fa-eye"></i> Live Preview
                             </button>
                             <button class="nav-tab" data-tab="tab-html">
-                                <i class="fa-solid fa-code"></i> HTML Output
+                                <i class="fa-solid fa-code"></i> HTML Output & Split
                             </button>
                             <button class="nav-tab" data-tab="tab-tokens">
                                 <i class="fa-solid fa-layer-group"></i> Tokens <span class="tab-count" id="badge-tokens">0</span>
@@ -233,7 +233,7 @@
                                 </div>
                             </div>
 
-                            <!-- Tab 2: HTML Source Code -->
+                            <!-- Tab 2: HTML Source Code & Side-by-Side Webpage View -->
                             <div class="tab-pane" id="tab-html">
                                 <div class="pane-action-bar">
                                     <button id="btn-copy-html" class="btn btn-sm btn-dark">
@@ -249,7 +249,16 @@
                                         <i class="fa-solid fa-file-csv"></i> Export Symbol CSV
                                     </button>
                                 </div>
-                                <pre class="code-viewport"><code id="html-code-output"></code></pre>
+                                <div class="html-split-container">
+                                    <div class="split-code-box">
+                                        <div class="box-title"><i class="fa-solid fa-code"></i> Raw HTML5 Output Code</div>
+                                        <pre class="code-viewport"><code id="html-code-output"></code></pre>
+                                    </div>
+                                    <div class="split-webpage-box">
+                                        <div class="box-title"><i class="fa-solid fa-globe"></i> Rendered Webpage View</div>
+                                        <div class="mini-webpage-viewport" id="mini-html-preview"></div>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Tab 3: Tokens (Lexer) -->
