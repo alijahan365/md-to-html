@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Md2Html Compiler — Next-Gen Web Studio & Compiler Engine</title>
+    <title>Md2Html Compiler Studio — CSE314 Compiler Design Project</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,246 +13,444 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="app-container">
-        <!-- Top Navigation / Header -->
-        <header class="app-header">
-            <div class="brand">
-                <div class="brand-icon-wrapper">
+    <div class="app-shell">
+        <!-- Top Application Navigation Bar -->
+        <header class="navbar">
+            <div class="nav-brand" id="nav-logo">
+                <div class="brand-logo-icon">
                     <i class="fa-solid fa-terminal"></i>
                 </div>
-                <div class="brand-info">
-                    <h1>Md2Html <span>Studio</span></h1>
-                    <p class="tagline">CSE314 Compiler Design • Lexer • Parser • Symbol Table • CodeGen</p>
+                <div class="brand-text">
+                    <span class="brand-title">Md2Html <span class="brand-badge">Compiler Studio</span></span>
+                    <span class="brand-sub">CSE314 Lab Project</span>
                 </div>
             </div>
 
-            <!-- Header Controls -->
-            <div class="header-actions">
-                <div class="control-group">
-                    <label for="preset-select"><i class="fa-solid fa-sliders"></i> Preset:</label>
-                    <select id="preset-select" class="custom-select">
-                        <option value="valid">Standard Markdown (Valid)</option>
-                        <option value="syntax_err">Syntax Error Demo (Unclosed Tags)</option>
-                        <option value="semantic_err">Semantic Error Demo (Missing URL & Collisions)</option>
-                        <option value="complex">Complex Formatting Demo</option>
-                    </select>
-                </div>
-
-                <div class="status-indicator" id="status-badge">
-                    <span class="pulse-dot"></span>
-                    <span id="status-text">Compiler Ready</span>
-                </div>
-
-                <button id="btn-compile" class="btn btn-accent">
-                    <i class="fa-solid fa-play"></i> Compile
+            <!-- Desktop View Tabs -->
+            <nav class="nav-menu">
+                <button class="nav-link active" data-view="view-home">
+                    <i class="fa-solid fa-house"></i> Home
                 </button>
+                <button class="nav-link" data-view="view-studio">
+                    <i class="fa-solid fa-code"></i> Interactive Studio
+                </button>
+                <button class="nav-link" data-view="view-phases">
+                    <i class="fa-solid fa-layer-group"></i> Compiler Phases
+                </button>
+                <button class="nav-link" data-view="view-architecture">
+                    <i class="fa-solid fa-diagram-project"></i> CEP & Architecture
+                </button>
+                <button class="nav-link" data-view="view-team">
+                    <i class="fa-solid fa-users-line"></i> Team & Course
+                </button>
+            </nav>
+
+            <!-- Navbar Quick Action Buttons -->
+            <div class="nav-right">
+                <button class="btn btn-primary" id="nav-btn-launch">
+                    <i class="fa-solid fa-rocket"></i> Launch Studio
+                </button>
+                <a href="https://github.com/alijahan365/md-to-html" target="_blank" rel="noopener noreferrer" class="github-btn" title="View Source on GitHub">
+                    <i class="fa-brands fa-github"></i>
+                </a>
             </div>
         </header>
 
-        <!-- Mobile View Toggle Switcher (Visible on screens < 992px) -->
-        <div class="mobile-pane-switcher">
-            <button class="mobile-switch-btn active" id="btn-show-editor">
-                <i class="fa-solid fa-code"></i> Markdown Editor
-            </button>
-            <button class="mobile-switch-btn" id="btn-show-visualizer">
-                <i class="fa-solid fa-chart-diagram"></i> Compiler Visualizer
-            </button>
-        </div>
+        <!-- Main SPA Content Views Container -->
+        <main class="view-container">
 
-        <!-- Main IDE Split Workspace -->
-        <main class="ide-workspace">
-            <!-- Left Side: Source Editor -->
-            <section class="ide-panel editor-panel active-mobile" id="panel-editor">
-                <div class="panel-header">
-                    <div class="panel-title">
-                        <i class="fa-solid fa-file-code"></i> Markdown Source Input
+            <!-- ================= VIEW 1: HOME / LANDING HERO ================= -->
+            <section class="view-pane active" id="view-home">
+                <div class="hero-section">
+                    <div class="hero-badge">
+                        <span class="pulse-dot-green"></span> CSE314 Compiler Design Lab • 4-Phase Pipeline
                     </div>
-                    <div class="panel-meta">
-                        <span class="stat-pill" id="stat-lines">0 lines</span>
-                        <span class="stat-pill" id="stat-chars">0 chars</span>
-                        <button id="btn-clear" class="icon-btn" title="Clear Editor Source"><i class="fa-solid fa-trash-can"></i></button>
+                    <h1 class="hero-title">
+                        Markdown-to-HTML <span>Compiler Engine</span> & Visualizer
+                    </h1>
+                    <p class="hero-subtitle">
+                        An end-to-end formal compiler translating Markdown source code into semantic HTML5 markup with precise line and column error diagnostics, dynamic symbol table tracking, and post-order AST code generation.
+                    </p>
+
+                    <div class="hero-cta-group">
+                        <button class="btn btn-hero-primary" id="btn-hero-launch">
+                            <i class="fa-solid fa-play"></i> Launch Interactive Studio →
+                        </button>
+                        <button class="btn btn-hero-secondary" id="btn-hero-cep">
+                            <i class="fa-solid fa-book-bookmark"></i> Explore CEP Architecture
+                        </button>
+                    </div>
+
+                    <!-- Key Stats Counter Grid -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-num">4-Phase</div>
+                            <div class="stat-label">Compiler Pipeline</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-num">14 Types</div>
+                            <div class="stat-label">Lexical Tokens</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-num">Line & Col</div>
+                            <div class="stat-label">Precise Diagnostics</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-num">Flex & Bison</div>
+                            <div class="stat-label">LALR Specification</div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="editor-body">
-                    <div class="line-numbers" id="line-numbers">1</div>
-                    <textarea id="markdown-input" spellcheck="false" placeholder="Type or paste Markdown source code here..."></textarea>
+                <!-- Feature Highlights Section -->
+                <div class="features-section">
+                    <h2 class="section-heading"><i class="fa-solid fa-cubes"></i> Core Compiler Pipeline Modules</h2>
+                    <div class="features-grid">
+                        <div class="feature-card" data-view-target="view-phases">
+                            <div class="feature-icon icon-cyan"><i class="fa-solid fa-list-ol"></i></div>
+                            <h3>1. Lexical Scanner</h3>
+                            <p>Character-by-character scanner generating 14 token types with precise line numbers (`line_number`) and column positions (`column_number`).</p>
+                            <span class="feature-link">Inspect Lexer →</span>
+                        </div>
+
+                        <div class="feature-card" data-view-target="view-phases">
+                            <div class="feature-icon icon-indigo"><i class="fa-solid fa-sitemap"></i></div>
+                            <h3>2. Top-Down Parser</h3>
+                            <p>Recursive descent AST constructor producing Document, Header, Paragraph, List Item, Bold, Italic, and Link syntax tree nodes.</p>
+                            <span class="feature-link">Inspect Parser →</span>
+                        </div>
+
+                        <div class="feature-card" data-view-target="view-phases">
+                            <div class="feature-icon icon-purple"><i class="fa-solid fa-database"></i></div>
+                            <h3>3. Symbol Table & Semantics</h3>
+                            <p>Dynamic symbol table tracking Headings (slugified anchor IDs) and Links, with empty header and duplicate anchor collision detection.</p>
+                            <span class="feature-link">Inspect Semantics →</span>
+                        </div>
+
+                        <div class="feature-card" data-view-target="view-phases">
+                            <div class="feature-icon icon-emerald"><i class="fa-solid fa-code"></i></div>
+                            <h3>4. HTML5 Code Generator</h3>
+                            <p>Post-order AST traversal algorithm outputting clean, standard HTML5 markup with live preview rendering.</p>
+                            <span class="feature-link">Inspect CodeGen →</span>
+                        </div>
+                    </div>
                 </div>
             </section>
 
-            <!-- Right Side: Compiler Visualizer & Phase Outputs -->
-            <section class="ide-panel output-panel" id="panel-visualizer">
-                <!-- Navigation Tab Bar -->
-                <div class="tab-navigation">
-                    <button class="nav-tab active" data-tab="tab-preview">
-                        <i class="fa-solid fa-eye"></i> Live Preview
+            <!-- ================= VIEW 2: INTERACTIVE STUDIO (IDE WORKSPACE) ================= -->
+            <section class="view-pane" id="view-studio">
+                <!-- Mobile Pane Switcher (Screens < 992px) -->
+                <div class="mobile-pane-switcher">
+                    <button class="mobile-switch-btn active" id="btn-show-editor">
+                        <i class="fa-solid fa-code"></i> Markdown Input
                     </button>
-                    <button class="nav-tab" data-tab="tab-html">
-                        <i class="fa-solid fa-code"></i> HTML Output
-                    </button>
-                    <button class="nav-tab" data-tab="tab-tokens">
-                        <i class="fa-solid fa-layer-group"></i> Tokens <span class="tab-count" id="badge-tokens">0</span>
-                    </button>
-                    <button class="nav-tab" data-tab="tab-ast">
-                        <i class="fa-solid fa-sitemap"></i> AST Tree
-                    </button>
-                    <button class="nav-tab" data-tab="tab-symbols">
-                        <i class="fa-solid fa-database"></i> Symbol Table <span class="tab-count" id="badge-symbols">0</span>
-                    </button>
-                    <button class="nav-tab" data-tab="tab-errors">
-                        <i class="fa-solid fa-shield-halved"></i> Diagnostics <span class="tab-count badge-error" id="badge-errors">0</span>
-                    </button>
-                    <button class="nav-tab" data-tab="tab-arch">
-                        <i class="fa-solid fa-diagram-project"></i> Pipeline
+                    <button class="mobile-switch-btn" id="btn-show-visualizer">
+                        <i class="fa-solid fa-chart-diagram"></i> Compiler Visualizer
                     </button>
                 </div>
 
-                <!-- Tab Content Wrapper -->
-                <div class="tab-panes-wrapper">
-                    <!-- Tab 1: Live Browser Preview -->
-                    <div class="tab-pane active" id="tab-preview">
-                        <div class="browser-mockup">
-                            <div class="browser-toolbar">
-                                <div class="window-controls">
-                                    <span class="window-dot dot-close"></span>
-                                    <span class="window-dot dot-min"></span>
-                                    <span class="window-dot dot-max"></span>
+                <div class="ide-workspace">
+                    <!-- Left Side: Markdown Source Editor -->
+                    <section class="ide-panel editor-panel active-mobile" id="panel-editor">
+                        <div class="panel-header">
+                            <div class="panel-title">
+                                <i class="fa-solid fa-pen-to-square"></i> Markdown Source Code
+                            </div>
+                            <div class="panel-meta">
+                                <div class="preset-wrapper">
+                                    <label for="preset-select"><i class="fa-solid fa-sliders"></i> Preset:</label>
+                                    <select id="preset-select" class="custom-select">
+                                        <option value="valid">Standard Markdown (Valid)</option>
+                                        <option value="syntax_err">Syntax Error Demo (Unclosed Tags)</option>
+                                        <option value="semantic_err">Semantic Error Demo (Missing URL & Collisions)</option>
+                                        <option value="complex">Complex Formatting Demo</option>
+                                    </select>
                                 </div>
-                                <div class="address-bar">
-                                    <i class="fa-solid fa-lock"></i>
-                                    <span>https://compiler-preview.local/output.html</span>
+                                <span class="stat-pill" id="stat-lines">0 lines</span>
+                                <span class="stat-pill" id="stat-chars">0 chars</span>
+                                <button id="btn-clear" class="icon-btn" title="Clear Editor Source"><i class="fa-solid fa-trash-can"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="editor-body">
+                            <div class="line-numbers" id="line-numbers">1</div>
+                            <textarea id="markdown-input" spellcheck="false" placeholder="Type or paste Markdown source code here..."></textarea>
+                        </div>
+                    </section>
+
+                    <!-- Right Side: Compiler Visualizer & Phase Output Tabs -->
+                    <section class="ide-panel output-panel" id="panel-visualizer">
+                        <!-- Tab Bar -->
+                        <div class="tab-navigation">
+                            <button class="nav-tab active" data-tab="tab-preview">
+                                <i class="fa-solid fa-eye"></i> Live Preview
+                            </button>
+                            <button class="nav-tab" data-tab="tab-html">
+                                <i class="fa-solid fa-code"></i> HTML Output
+                            </button>
+                            <button class="nav-tab" data-tab="tab-tokens">
+                                <i class="fa-solid fa-layer-group"></i> Tokens <span class="tab-count" id="badge-tokens">0</span>
+                            </button>
+                            <button class="nav-tab" data-tab="tab-ast">
+                                <i class="fa-solid fa-sitemap"></i> AST Tree
+                            </button>
+                            <button class="nav-tab" data-tab="tab-symbols">
+                                <i class="fa-solid fa-database"></i> Symbol Table <span class="tab-count" id="badge-symbols">0</span>
+                            </button>
+                            <button class="nav-tab" data-tab="tab-errors">
+                                <i class="fa-solid fa-shield-halved"></i> Diagnostics <span class="tab-count badge-error" id="badge-errors">0</span>
+                            </button>
+                        </div>
+
+                        <!-- Tab Panes -->
+                        <div class="tab-panes-wrapper">
+                            <!-- Tab 1: Live Browser Preview -->
+                            <div class="tab-pane active" id="tab-preview">
+                                <div class="browser-mockup">
+                                    <div class="browser-toolbar">
+                                        <div class="window-controls">
+                                            <span class="window-dot dot-close"></span>
+                                            <span class="window-dot dot-min"></span>
+                                            <span class="window-dot dot-max"></span>
+                                        </div>
+                                        <div class="address-bar">
+                                            <i class="fa-solid fa-lock"></i>
+                                            <span>https://compiler-preview.local/output.html</span>
+                                        </div>
+                                        <div class="browser-tools">
+                                            <button id="btn-toggle-theme" class="tool-btn" title="Toggle Light/Dark Theme">
+                                                <i class="fa-solid fa-moon"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="browser-content" id="html-preview-body">
+                                        <p class="empty-state-text">Compilation output will render here...</p>
+                                    </div>
                                 </div>
-                                <div class="browser-tools">
-                                    <button id="btn-toggle-theme" class="tool-btn" title="Toggle Light/Dark Theme">
-                                        <i class="fa-solid fa-moon"></i>
+                            </div>
+
+                            <!-- Tab 2: HTML Source Code -->
+                            <div class="tab-pane" id="tab-html">
+                                <div class="pane-action-bar">
+                                    <button id="btn-copy-html" class="btn btn-sm btn-dark">
+                                        <i class="fa-solid fa-copy"></i> Copy HTML
+                                    </button>
+                                    <button id="btn-download-html" class="btn btn-sm btn-dark">
+                                        <i class="fa-solid fa-download"></i> Download .html
                                     </button>
                                 </div>
+                                <pre class="code-viewport"><code id="html-code-output"></code></pre>
                             </div>
-                            <div class="browser-content" id="html-preview-body">
-                                <p class="empty-state-text">Compilation output will render here...</p>
+
+                            <!-- Tab 3: Tokens (Lexer) -->
+                            <div class="tab-pane" id="tab-tokens">
+                                <div class="data-table-wrapper">
+                                    <table class="compiler-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 50px;">#</th>
+                                                <th style="width: 110px;">Location</th>
+                                                <th style="width: 160px;">Token Type</th>
+                                                <th>Lexeme Value</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tokens-tbody">
+                                            <tr><td colspan="4" class="empty-cell">No tokens scanned.</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <!-- Tab 2: HTML Source Code -->
-                    <div class="tab-pane" id="tab-html">
-                        <div class="pane-action-bar">
-                            <button id="btn-copy-html" class="btn btn-sm btn-dark">
-                                <i class="fa-solid fa-copy"></i> Copy HTML
-                            </button>
-                            <button id="btn-download-html" class="btn btn-sm btn-dark">
-                                <i class="fa-solid fa-download"></i> Download .html
-                            </button>
-                        </div>
-                        <pre class="code-viewport"><code id="html-code-output"></code></pre>
-                    </div>
+                            <!-- Tab 4: AST Tree -->
+                            <div class="tab-pane" id="tab-ast">
+                                <div class="tree-viewport" id="ast-container">
+                                    <p class="empty-state-text">Abstract Syntax Tree will display here.</p>
+                                </div>
+                            </div>
 
-                    <!-- Tab 3: Tokens (Lexer) -->
-                    <div class="tab-pane" id="tab-tokens">
-                        <div class="data-table-wrapper">
-                            <table class="compiler-table">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 60px;">#</th>
-                                        <th style="width: 110px;">Location</th>
-                                        <th style="width: 170px;">Token Type</th>
-                                        <th>Lexeme Value</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tokens-tbody">
-                                    <tr><td colspan="4" class="empty-cell">No tokens scanned yet.</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                            <!-- Tab 5: Symbol Table -->
+                            <div class="tab-pane" id="tab-symbols">
+                                <div class="data-table-wrapper">
+                                    <table class="compiler-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 50px;">#</th>
+                                                <th style="width: 110px;">Category</th>
+                                                <th>Identifier / Display Label</th>
+                                                <th>Target URL / Anchor ID</th>
+                                                <th style="width: 110px;">Location</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="symbols-tbody">
+                                            <tr><td colspan="5" class="empty-cell">Symbol table is empty.</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
 
-                    <!-- Tab 4: AST Tree -->
-                    <div class="tab-pane" id="tab-ast">
-                        <div class="tree-viewport" id="ast-container">
-                            <p class="empty-state-text">Abstract Syntax Tree will display here.</p>
-                        </div>
-                    </div>
-
-                    <!-- Tab 5: Symbol Table -->
-                    <div class="tab-pane" id="tab-symbols">
-                        <div class="data-table-wrapper">
-                            <table class="compiler-table">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 50px;">#</th>
-                                        <th style="width: 120px;">Category</th>
-                                        <th>Identifier / Display Label</th>
-                                        <th>Target URL / Anchor ID</th>
-                                        <th style="width: 110px;">Location</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="symbols-tbody">
-                                    <tr><td colspan="5" class="empty-cell">Symbol table is empty.</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Tab 6: Diagnostics & Error Logs -->
-                    <div class="tab-pane" id="tab-errors">
-                        <div class="diagnostics-viewport" id="errors-container">
-                            <div class="clean-status-card">
-                                <i class="fa-solid fa-circle-check"></i>
-                                <div>
-                                    <h4>Compilation Successful</h4>
-                                    <p>0 Syntax Errors, 0 Semantic Warnings detected.</p>
+                            <!-- Tab 6: Diagnostics & Error Logs -->
+                            <div class="tab-pane" id="tab-errors">
+                                <div class="diagnostics-viewport" id="errors-container">
+                                    <div class="clean-status-card">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                        <div>
+                                            <h4>Compilation Passed cleanly</h4>
+                                            <p>0 Syntax Errors, 0 Semantic Warnings detected.</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </section>
+                </div>
+            </section>
+
+            <!-- ================= VIEW 3: COMPILER PHASES BREAKDOWN ================= -->
+            <section class="view-pane" id="view-phases">
+                <div class="content-header">
+                    <h2><i class="fa-solid fa-microscope"></i> 4-Phase Compiler Breakdown</h2>
+                    <p>Detailed technical specification of each compiler phase in our handwritten C engine & web studio implementation.</p>
+                </div>
+
+                <div class="phase-detail-grid">
+                    <div class="phase-card">
+                        <div class="phase-badge badge-cyan">Phase 1</div>
+                        <h3>Lexical Scanner (`lexer.c` / `lexer.l`)</h3>
+                        <p>Scans input Markdown source code character-by-character. Emits 14 token types (`HEADER1..3`, `BOLD`, `ITALIC`, `UNORDERED_LIST`, `ORDERED_LIST`, `LINK_START/MID/END`, `TEXT`, `NEWLINE`, `BLANK_LINE`, `EOF`). Maintains exact `line_number` and `column_number` positions for every token.</p>
                     </div>
 
-                    <!-- Tab 7: Architecture Pipeline Diagram -->
-                    <div class="tab-pane" id="tab-arch">
-                        <div class="arch-container">
-                            <h3><i class="fa-solid fa-cubes-stacked"></i> Markdown Compiler 4-Phase Architecture</h3>
-                            <div class="pipeline-flow">
-                                <div class="flow-card">
-                                    <div class="step-num">Phase 1</div>
-                                    <h4>Lexical Scanner</h4>
-                                    <p>Scans input Markdown & generates Token Stream with Line & Column tracking.</p>
-                                    <span class="tech-chip">lexer.c / Lexer Class</span>
-                                </div>
-                                <div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-                                <div class="flow-card">
-                                    <div class="step-num">Phase 2</div>
-                                    <h4>Syntax Parser</h4>
-                                    <p>Top-Down Recursive Descent Parser constructs Abstract Syntax Tree (AST).</p>
-                                    <span class="tech-chip">parser.c / Parser Class</span>
-                                </div>
-                                <div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-                                <div class="flow-card">
-                                    <div class="step-num">Phase 3</div>
-                                    <h4>Symbol & Semantics</h4>
-                                    <p>Tracks Headings & Links in Symbol Table, checks empty tags & duplicate anchors.</p>
-                                    <span class="tech-chip">symbol_table.c / semantic.c</span>
-                                </div>
-                                <div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
-                                <div class="flow-card">
-                                    <div class="step-num">Phase 4</div>
-                                    <h4>HTML CodeGen</h4>
-                                    <p>Post-order AST traversal generating semantic HTML5 code & live browser preview.</p>
-                                    <span class="tech-chip">html_generator.c / CodeGen</span>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="phase-card">
+                        <div class="phase-badge badge-indigo">Phase 2</div>
+                        <h3>Syntax Parser (`parser.c` / `parser.y`)</h3>
+                        <p>Constructs an Abstract Syntax Tree (AST) using a Top-Down Recursive Descent approach in C and formal LALR Context-Free Grammar rules in Bison. Creates tree nodes for Document structural blocks, Headings, Paragraphs, Lists, and Inline Formats.</p>
+                    </div>
+
+                    <div class="phase-card">
+                        <div class="phase-badge badge-purple">Phase 3</div>
+                        <h3>Symbol Table & Semantic Analyzer (`symbol_table.c` & `semantic.c`)</h3>
+                        <p>Populates a dynamic symbol table containing all document Headings (with auto-slugified anchor IDs) and Hyperlinks. Validates semantic integrity: flags empty headings, missing link targets, and duplicate heading anchor ID collisions.</p>
+                    </div>
+
+                    <div class="phase-card">
+                        <div class="phase-badge badge-emerald">Phase 4</div>
+                        <h3>HTML Code Generator (`html_generator.c`)</h3>
+                        <p>Performs a post-order traversal on the AST to emit clean, standard HTML5 elements (`<h1>..<h3>`, `<p>`, `<ul>`, `<ol>`, `<li>`, `<strong>`, `<em>`, `<a href="..." target="_blank">`).</p>
                     </div>
                 </div>
             </section>
+
+            <!-- ================= VIEW 4: CEP & ARCHITECTURE ================= -->
+            <section class="view-pane" id="view-architecture">
+                <div class="content-header">
+                    <h2><i class="fa-solid fa-diagram-project"></i> CEP (Complex Engineering Problem) & Architecture</h2>
+                    <p>Formal academic criteria alignment and architecture flow for CSE314 Compiler Design Lab.</p>
+                </div>
+
+                <!-- CEP Alignment Table -->
+                <div class="cep-table-card">
+                    <h3><i class="fa-solid fa-award"></i> CEP 5-Point Requirement Alignment</h3>
+                    <div class="data-table-wrapper">
+                        <table class="compiler-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 220px;">CEP Requirement</th>
+                                    <th>Project Implementation & Technical Defense</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>1. Depth of Knowledge</strong></td>
+                                    <td>Applies core compiler concepts: character tokenization, LL/LALR syntax tree parsing, dynamic symbol table management, and semantic verification.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>2. Conflicting Requirements</strong></td>
+                                    <td>Balances handwritten recursive descent parsing simplicity with formal Flex/Bison LALR grammar specifications and line/column error tracking.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>3. Depth of Analysis</strong></td>
+                                    <td>Evaluates Markdown grammar ambiguities (inline formatting vs list blocks) and provides precise source position diagnostics.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>4. Multiple Components</strong></td>
+                                    <td>Integrates 5 connected compiler modules: Lexer, Parser, Symbol Table, Semantic Analyzer, and Target HTML Code Generator.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>5. Unfamiliar Issues</strong></td>
+                                    <td>Handles edge cases: unclosed Markdown delimiters, missing link target URLs, empty headers, and duplicate anchor collisions.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Architecture Flowchart Card -->
+                <div class="arch-flow-card">
+                    <h3><i class="fa-solid fa-network-wired"></i> Compiler Dataflow Pipeline Diagram</h3>
+                    <div class="ascii-diagram-viewport">
+  ┌───────────────────┐        ┌───────────────────┐        ┌───────────────────┐
+  │    sample.md      │ ─────► │  Phase 1: Lexer   │ ─────► │  Phase 2: Parser  │
+  │  (Markdown Text)  │        │ (Tokens + L#:C#)  │        │(Recursive Descent │
+  └───────────────────┘        └───────────────────┘        │   or Bison AST)   │
+                                                            └───────────────────┘
+                                                                      │
+                                                                      ▼
+  ┌───────────────────┐        ┌───────────────────┐        ┌───────────────────┐
+  │    output.html    │ ◄───── │  Phase 4: CodeGen │ ◄───── │ Phase 3: Semantics│
+  │  (HTML5 Document) │        │(HTML5 Generation) │        │  & Symbol Table   │
+  └───────────────────┘        └───────────────────┘        └───────────────────┘
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= VIEW 5: TEAM & COURSE DETAILS ================= -->
+            <section class="view-pane" id="view-team">
+                <div class="content-header">
+                    <h2><i class="fa-solid fa-graduation-cap"></i> Academic Team & Course Details</h2>
+                    <p>Course information, instructor details, and development team for CSE314 Compiler Design Lab.</p>
+                </div>
+
+                <div class="team-grid">
+                    <!-- Course Card -->
+                    <div class="team-card info-card">
+                        <div class="card-badge">Course Information</div>
+                        <h3>Compiler Design Lab</h3>
+                        <p class="course-code">Course Code: <strong>CSE314</strong></p>
+                        <p class="instructor-title">Course Instructor:</p>
+                        <h4 class="instructor-name">S.K.M. Shadekul Islam</h4>
+                        <p class="dept-name">Department of Computer Science & Engineering</p>
+                    </div>
+
+                    <!-- Member 1 Card -->
+                    <div class="team-card profile-card">
+                        <div class="profile-avatar">AR</div>
+                        <h3>Ali Jahan Riashad</h3>
+                        <p class="student-id">Student ID: <code>242-15-846</code></p>
+                        <p class="role-desc">Compiler Architecture, Parser Implementation, Dynamic Symbol Table, & Web Studio Development.</p>
+                    </div>
+
+                    <!-- Member 2 Card -->
+                    <div class="team-card profile-card">
+                        <div class="profile-avatar">AI</div>
+                        <h3>Araft Islam</h3>
+                        <p class="student-id">Student ID: <code>242-15-388</code></p>
+                        <p class="role-desc">Lexical Analyzer, Flex Scanner & Bison Parser Specifications, Testing & Documentation.</p>
+                    </div>
+                </div>
+            </section>
+
         </main>
+
+        <!-- Floating Toast Notification Container -->
+        <div id="toast-container" class="toast-container"></div>
 
         <!-- Footer -->
         <footer class="app-footer">
             <div class="footer-left">
-                <span>Md2Html Studio • CSE314 Compiler Design Project</span>
+                <span>Md2Html Studio • CSE314 Compiler Design Lab Project</span>
             </div>
             <div class="footer-right">
                 <a href="https://github.com/alijahan365/md-to-html" target="_blank" rel="noopener noreferrer" class="footer-link">
-                    <i class="fa-brands fa-github"></i> GitHub Repo
+                    <i class="fa-brands fa-github"></i> GitHub Repository
                 </a>
             </div>
         </footer>

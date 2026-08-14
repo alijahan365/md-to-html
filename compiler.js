@@ -1,6 +1,5 @@
 // Markdown compiler engine (Lexer, Parser, Symbol Table, CodeGen)
 
-
 // 1. TOKEN DEFINITIONS
 const TOKEN_TYPES = {
     HEADER1: 'HEADER1',
@@ -106,7 +105,6 @@ class Lexer {
         }
 
         if (this.isLineStart) {
-            // Headers
             if (c === '#') {
                 let hashCount = 0;
                 let tempPos = this.pos;
@@ -123,14 +121,12 @@ class Lexer {
                 }
             }
 
-            // Unordered list
             if ((c === '-' || c === '*') && this.src[this.pos + 1] === ' ') {
                 this.advance(); this.advance();
                 this.isLineStart = false;
                 return { type: TOKEN_TYPES.UNORDERED_LIST, value: '-', line: startLine, col: startCol };
             }
 
-            // Ordered list
             if (/\d/.test(c)) {
                 let temp = this.pos;
                 while (temp < this.src.length && /\d/.test(this.src[temp])) temp++;
@@ -145,7 +141,6 @@ class Lexer {
 
         this.isLineStart = false;
 
-        // Bold & Italic
         if (c === '*') {
             if (this.src[this.pos + 1] === '*') {
                 this.advance(); this.advance();
@@ -155,12 +150,10 @@ class Lexer {
             return { type: TOKEN_TYPES.ITALIC, value: '*', line: startLine, col: startCol };
         }
 
-        // Links
         if (c === '[') { this.advance(); return { type: TOKEN_TYPES.LINK_START, value: '[', line: startLine, col: startCol }; }
         if (c === ']' && this.src[this.pos + 1] === '(') { this.advance(); this.advance(); return { type: TOKEN_TYPES.LINK_MID, value: '](', line: startLine, col: startCol }; }
         if (c === ')') { this.advance(); return { type: TOKEN_TYPES.LINK_END, value: ')', line: startLine, col: startCol }; }
 
-        // Text accumulation
         const startPos = this.pos;
         while (!this.isAtEnd()) {
             const next = this.peek();
@@ -341,13 +334,7 @@ class Parser {
             return node;
         }
 
-        if (tok.type === TOKEN_TYPES.NEWLINE) {
-            const node = { type: NODE_TYPES.TEXT, text: ' ', line: tok.line, col: tok.col };
-            this.advance();
-            return node;
-        }
-
-        const node = { type: NODE_TYPES.TEXT, text: tok.value || '', line: tok.line, col: tok.col };
+        const node = { type: NODE_TYPES.TEXT, text: tok.value, line: tok.line, col: tok.col };
         this.advance();
         return node;
     }
@@ -360,26 +347,27 @@ class SymbolTableAnalyzer {
         this.semanticErrors = [];
     }
 
-    extractText(node) {
-        if (!node) return '';
-        let text = node.text || '';
-        if (node.children) {
-            for (const child of node.children) {
-                text += this.extractText(child);
-            }
-        }
-        return text;
-    }
-
-    sanitizeSlug(text) {
-        return text.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
-    }
-
     populateAndAnalyze(ast) {
         this.symbols = [];
         this.semanticErrors = [];
         this.traverseAST(ast);
         this.checkDuplicateHeadings();
+    }
+
+    sanitizeSlug(str) {
+        return str.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
+    }
+
+    extractText(node) {
+        if (!node) return '';
+        if (node.text) return node.text;
+        let res = '';
+        if (node.children) {
+            for (const child of node.children) {
+                res += this.extractText(child);
+            }
+        }
+        return res;
     }
 
     traverseAST(node) {
@@ -404,20 +392,6 @@ class SymbolTableAnalyzer {
                     col: node.col
                 });
             }
-        } else if (node.type === NODE_TYPES.BOLD && (!node.children || node.children.length === 0)) {
-            this.semanticErrors.push({
-                type: 'Semantic Warning',
-                message: 'Empty bold block (**).',
-                line: node.line,
-                col: node.col
-            });
-        } else if (node.type === NODE_TYPES.ITALIC && (!node.children || node.children.length === 0)) {
-            this.semanticErrors.push({
-                type: 'Semantic Warning',
-                message: 'Empty italic block (*).',
-                line: node.line,
-                col: node.col
-            });
         } else if (node.type === NODE_TYPES.LINK) {
             const text = this.extractText(node).trim();
             if (text.length === 0) {
@@ -591,12 +565,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnDownloadHTML = document.getElementById('btn-download-html');
     const btnToggleTheme = document.getElementById('btn-toggle-theme');
 
-    const browserMockup = document.querySelector('.browser-mockup');
-    const statusBadge = document.getElementById('status-badge');
-    const statusText = document.getElementById('status-text');
-
     const statLines = document.getElementById('stat-lines');
     const statChars = document.getElementById('stat-chars');
+    const statusBadge = document.getElementById('status-badge');
+    const statusText = document.getElementById('status-text');
 
     const badgeTokens = document.getElementById('badge-tokens');
     const badgeSymbols = document.getElementById('badge-symbols');
@@ -608,6 +580,47 @@ document.addEventListener('DOMContentLoaded', () => {
     const symbolsTbody = document.getElementById('symbols-tbody');
     const astContainer = document.getElementById('ast-container');
     const errorsContainer = document.getElementById('errors-container');
+    const browserMockup = document.querySelector('.browser-mockup');
+    const toastContainer = document.getElementById('toast-container');
+
+    // SPA Router View Switcher
+    function switchView(viewId) {
+        document.querySelectorAll('.nav-link').forEach(btn => {
+            if (btn.getAttribute('data-view') === viewId) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+
+        document.querySelectorAll('.view-pane').forEach(pane => {
+            if (pane.id === viewId) {
+                pane.classList.add('active');
+            } else {
+                pane.classList.remove('active');
+            }
+        });
+    }
+
+    document.querySelectorAll('.nav-link').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetView = btn.getAttribute('data-view');
+            switchView(targetView);
+        });
+    });
+
+    // Launch buttons & logo routing
+    document.getElementById('nav-logo').addEventListener('click', () => switchView('view-home'));
+    document.getElementById('nav-btn-launch').addEventListener('click', () => switchView('view-studio'));
+    document.getElementById('btn-hero-launch').addEventListener('click', () => switchView('view-studio'));
+    document.getElementById('btn-hero-cep').addEventListener('click', () => switchView('view-architecture'));
+
+    document.querySelectorAll('.feature-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const target = card.getAttribute('data-view-target');
+            if (target) switchView(target);
+        });
+    });
 
     // Mobile Pane Switcher
     const btnShowEditor = document.getElementById('btn-show-editor');
@@ -631,20 +644,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Theme toggle
-    let isDarkTheme = false;
-    btnToggleTheme.addEventListener('click', () => {
-        isDarkTheme = !isDarkTheme;
-        if (isDarkTheme) {
-            browserMockup.classList.add('dark-theme');
-            btnToggleTheme.innerHTML = '<i class="fa-solid fa-sun"></i>';
-        } else {
-            browserMockup.classList.remove('dark-theme');
-            btnToggleTheme.innerHTML = '<i class="fa-solid fa-moon"></i>';
-        }
-    });
+    // Floating Toast Notification
+    function showToast(message, type = 'info') {
+        if (!toastContainer) return;
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        const icon = type === 'warning' ? 'fa-triangle-exclamation' : (type === 'error' ? 'fa-circle-xmark' : 'fa-circle-info');
+        toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${escapeHTML(message)}</span>`;
+        toastContainer.appendChild(toast);
+        setTimeout(() => {
+            toast.remove();
+        }, 3500);
+    }
 
-    // Intercept clicks in Live Preview pane so links ALWAYS open in a new tab without reloading main page
+    // Smart Link Click Interceptor
     htmlPreviewBody.addEventListener('click', (e) => {
         const link = e.target.closest('a');
         if (link) {
@@ -656,7 +669,23 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             if (href && href !== '#') {
                 window.open(href, '_blank', 'noopener,noreferrer');
+                showToast(`Opening ${href} in new tab...`, 'info');
+            } else {
+                showToast('Semantic Error: Link is missing target URL.', 'warning');
             }
+        }
+    });
+
+    // Theme toggle
+    let isDarkTheme = false;
+    btnToggleTheme.addEventListener('click', () => {
+        isDarkTheme = !isDarkTheme;
+        if (isDarkTheme) {
+            browserMockup.classList.add('dark-mode');
+            btnToggleTheme.innerHTML = '<i class="fa-solid fa-sun"></i>';
+        } else {
+            browserMockup.classList.remove('dark-mode');
+            btnToggleTheme.innerHTML = '<i class="fa-solid fa-moon"></i>';
         }
     });
 
@@ -684,20 +713,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    btnCompile.addEventListener('click', compileSource);
+    if (btnCompile) btnCompile.addEventListener('click', compileSource);
 
     btnClear.addEventListener('click', () => {
         markdownInput.value = '';
         updateEditor();
         compileSource();
+        showToast('Editor cleared.', 'info');
     });
 
     btnCopyHTML.addEventListener('click', () => {
         const code = htmlCodeOutput.textContent;
         navigator.clipboard.writeText(code).then(() => {
             btnCopyHTML.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+            showToast('HTML code copied to clipboard.', 'info');
             setTimeout(() => {
-                btnCopyHTML.innerHTML = '<i class="fa-solid fa-copy"></i> Copy Code';
+                btnCopyHTML.innerHTML = '<i class="fa-solid fa-copy"></i> Copy HTML';
             }, 2000);
         });
     });
@@ -711,9 +742,10 @@ document.addEventListener('DOMContentLoaded', () => {
         a.download = 'compiled_output.html';
         a.click();
         URL.revokeObjectURL(url);
+        showToast('Downloaded compiled_output.html', 'info');
     });
 
-    // Tab Navigation
+    // Tab Navigation inside Visualizer Panel
     document.querySelectorAll('.nav-tab').forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
@@ -721,7 +753,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             btn.classList.add('active');
             const tabId = btn.getAttribute('data-tab');
-            document.getElementById(tabId).classList.add('active');
+            const targetPane = document.getElementById(tabId);
+            if (targetPane) targetPane.classList.add('active');
         });
     });
 
@@ -785,21 +818,24 @@ ${generatedBody}</body>
         htmlCodeOutput.textContent = fullHTMLDoc;
 
         // Update Stats Badges
-        badgeTokens.textContent = tokens.length;
-        badgeSymbols.textContent = symAnalyzer.symbols.length;
-        badgeErrors.textContent = allErrors.length;
+        if (badgeTokens) badgeTokens.textContent = tokens.length;
+        if (badgeSymbols) badgeSymbols.textContent = symAnalyzer.symbols.length;
+        if (badgeErrors) badgeErrors.textContent = allErrors.length;
 
-        if (allErrors.length > 0) {
-            const hasSyntaxErr = parser.syntaxErrors.length > 0;
-            statusBadge.className = hasSyntaxErr ? 'status-indicator status-error' : 'status-indicator status-warning';
-            statusText.textContent = hasSyntaxErr ? `${allErrors.length} Syntax Error(s)` : `${allErrors.length} Semantic Warning(s)`;
-        } else {
-            statusBadge.className = 'status-indicator';
-            statusText.textContent = 'Compilation Passed';
+        if (statusBadge && statusText) {
+            if (allErrors.length > 0) {
+                const hasSyntaxErr = parser.syntaxErrors.length > 0;
+                statusBadge.className = hasSyntaxErr ? 'status-indicator status-error' : 'status-indicator status-warning';
+                statusText.textContent = hasSyntaxErr ? `${allErrors.length} Syntax Error(s)` : `${allErrors.length} Semantic Warning(s)`;
+            } else {
+                statusBadge.className = 'status-indicator';
+                statusText.textContent = 'Compiler Ready';
+            }
         }
     }
 
     function renderTokens(tokens) {
+        if (!tokensTbody) return;
         if (tokens.length === 0) {
             tokensTbody.innerHTML = '<tr><td colspan="4" class="empty-cell">No tokens scanned.</td></tr>';
             return;
@@ -818,6 +854,7 @@ ${generatedBody}</body>
     }
 
     function renderSymbols(symbols) {
+        if (!symbolsTbody) return;
         if (symbols.length === 0) {
             symbolsTbody.innerHTML = '<tr><td colspan="5" class="empty-cell">Symbol table is empty.</td></tr>';
             return;
@@ -837,6 +874,7 @@ ${generatedBody}</body>
     }
 
     function renderAST(ast) {
+        if (!astContainer) return;
         astContainer.innerHTML = formatASTNode(ast);
     }
 
@@ -861,6 +899,7 @@ ${generatedBody}</body>
     }
 
     function renderErrors(errors) {
+        if (!errorsContainer) return;
         if (errors.length === 0) {
             errorsContainer.innerHTML = `
             <div class="clean-status-card">
@@ -889,6 +928,7 @@ ${generatedBody}</body>
     }
 
     function renderPreview(htmlBody) {
+        if (!htmlPreviewBody) return;
         if (!htmlBody || htmlBody.trim() === '') {
             htmlPreviewBody.innerHTML = '<p class="empty-state-text">No output generated.</p>';
             return;
