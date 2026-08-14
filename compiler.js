@@ -508,21 +508,23 @@ class CodeGenerator {
 
 // 6. UI CONTROLLER & PRESET DEMOS
 const PRESETS = {
-    valid: `# Compiler Design Project
-## Markdown to HTML Compiler
+    valid: `# Heading 1
+## Heading 2
+### Heading 3
 
-### Key Features
-This compiler parses **Markdown syntax** into clean HTML.
+Here is a paragraph with **Bold** text and *Italic* text.
 
-- Lexical Scanner
-- Recursive Parser
-- Symbol Table
+- Item 1
+- Item 2
+- Item 3
 
-1. Input Tokenization
-2. AST Construction
-3. Semantic Validation
+1. First Item
+2. Second Item
 
-For project details, visit [Google Search](https://google.com).`,
+Check out this [Google](https://google.com) link.
+
+Normal paragraph ends here.`,
+    StartLine:510,TargetContent:
 
     syntax_err: `# Syntax Error Demonstration
 
