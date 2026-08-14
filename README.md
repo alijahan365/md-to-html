@@ -112,8 +112,8 @@ This project implements a formal **Markdown-to-HTML Compiler and Translator** ad
 
 | Member Name | Student ID | Assigned Modules & Files |
 | :--- | :--- | :--- |
-| **Ali Jahan Riashad** *(Lead)* | `242-15-846` | • Lexical Scanner & Flex Spec (`lexer.h`, `lexer.c`, `lexer.l`)<br>• HTML Code Generator (`html_generator.h`, `html_generator.c`)<br>• Semantic Analyzer (`semantic.h`, `semantic.c`)<br>• Web Studio SPA (`index.html`, `style.css`, `compiler.js`)<br>• CI/CD Workflow & Makefile (`.github/workflows/ci.yml`, `Makefile`)<br>• Comprehensive Documentation (`README.md`, `LICENSE`) |
-| **Araft Islam** *(Contributor)* | `242-15-388` | • AST Structs & Allocation (`utils.h`, `utils.c`)<br>• Syntax Parser & Bison Spec (`parser.h`, `parser.c`, `parser.y`)<br>• Dynamic Symbol Table (`symbol_table.h`, `symbol_table.c`)<br>• CLI Driver & Sample Test Cases (`main.c`, `sample.md`) |
+| **Ali Jahan Riashad** *(Lead)* | `242-15-846` | • Lexical Scanner & Flex Spec (`lexer.h`, `lexer.c`, `lexer.l`)<br>• HTML Code Generator (`html_generator.h`, `html_generator.c`)<br>• Semantic Analyzer (`semantic.h`, `semantic.c`)<br>• Web Studio Layout (`index.html`, `style.css`)<br>• CI/CD Workflow & Makefile (`.github/workflows/ci.yml`, `Makefile`)<br>• Comprehensive Documentation (`README.md`, `LICENSE`) |
+| **Araft Islam** *(Contributor)* | `242-15-388` | • AST Structs & Allocation (`utils.h`, `utils.c`)<br>• Syntax Parser & Bison Spec (`parser.h`, `parser.c`, `parser.y`)<br>• Dynamic Symbol Table (`symbol_table.h`, `symbol_table.c`)<br>• Client Web Compiler Engine (`compiler.js`)<br>• CLI Driver & Sample Test Cases (`main.c`, `sample.md`) |
 
 ---
 
